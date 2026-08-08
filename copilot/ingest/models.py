@@ -8,9 +8,37 @@ moment the mistake is made, with the field name in the error.
 
 from __future__ import annotations
 
+from datetime import datetime
 from pathlib import Path
 
 from pydantic import BaseModel, Field
+
+from copilot.ingest.metadata import AccessLevel, DocType
+
+
+class DocumentMetadata(BaseModel):
+    """The filterable, displayable facts about a document.
+
+    Kept as its own model rather than loose fields on RawDocument because this
+    exact object gets copied onto every chunk, stored in the Qdrant payload, and
+    shown in the citation UI. One definition, one shape, everywhere.
+    """
+
+    source_name: str
+    doc_type: DocType
+    access_level: AccessLevel
+
+    last_updated: datetime | None = None
+    age_days: int | None = Field(
+        default=None,
+        description="Days since last change, computed at ingestion time",
+    )
+
+    url: str | None = Field(default=None, description="Public URL, so a human can check the citation")
+    title: str = ""
+
+    # Filled during chunking (Step 1.3): the nearest heading above the chunk.
+    section_heading: str | None = None
 
 
 class RawDocument(BaseModel):
@@ -32,6 +60,10 @@ class RawDocument(BaseModel):
 
     raw_text: str = Field(description="Exactly what was on disk")
     clean_text: str = Field(description="Normalized text, headings preserved")
+
+    # None until copilot.ingest.metadata.enrich() runs. Optional rather than
+    # required so loading and enriching stay independently testable.
+    meta: DocumentMetadata | None = None
 
     # PDFs only: character offset where each page starts, so a chunk can report
     # the page number it came from. Citations that say "page 14" are far more

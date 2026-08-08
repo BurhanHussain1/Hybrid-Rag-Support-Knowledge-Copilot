@@ -99,6 +99,19 @@ def download(name: str, url: str, paths: list[str], *, force: bool = False) -> N
     ])
     run(["git", "-C", str(target), "sparse-checkout", "set", *paths])
 
+    # Fetch full commit history.
+    #
+    # --depth 1 gives one commit, which means `git log` reports the same date for
+    # every file: the moment you cloned. That silently destroys the last_updated
+    # metadata field, and with it the "outdated document" test cases in the
+    # evaluation set. The bug is invisible - you get dates, they are just all wrong.
+    #
+    # --filter=blob:none keeps this affordable: we download commits and trees
+    # (which is all `git log --name-only` needs) but not historical file contents.
+    # Measured cost: 17s for fastapi, 108s for kubernetes/website.
+    print(f"[history] {name} (needed for last_updated metadata)")
+    run(["git", "-C", str(target), "fetch", "--unshallow", "--filter=blob:none"])
+
 
 def main() -> int:
     force = "--force" in sys.argv
