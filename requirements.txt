@@ -1,0 +1,41 @@
+# Versions are intentionally loose for now. Once the pipeline runs end-to-end
+# we freeze them with `pip freeze > requirements.lock.txt` so the build is
+# reproducible. Pinning before anything is installed just invents numbers.
+
+# --- API layer ---
+fastapi
+uvicorn[standard]
+pydantic>=2
+pydantic-settings
+
+# --- Config ---
+python-dotenv
+
+# --- Ingestion: loaders and cleaning ---
+python-frontmatter      # parses the YAML block at the top of md/mdx files
+beautifulsoup4          # HTML -> text
+lxml                    # fast parser backend for BeautifulSoup
+pypdf                   # PDF -> text, keeps page numbers
+markdown-it-py          # markdown parsing when regex is not enough
+
+# --- Retrieval: dense ---
+sentence-transformers   # runs bge-small locally on CPU
+qdrant-client           # vector store client
+
+# --- Retrieval: sparse ---
+rank-bm25               # keyword search, catches error codes and exact names
+
+# --- Generation and judging ---
+openai
+tiktoken                # token counting, so we never overflow the context window
+
+# --- Evaluation ---
+pandas                  # metric tables
+tqdm                    # progress bars on long eval runs
+
+# --- Dashboard ---
+streamlit
+
+# --- Dev tooling ---
+pytest
+ruff

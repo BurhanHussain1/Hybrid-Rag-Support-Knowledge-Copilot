@@ -1,0 +1,49 @@
+# ---------------------------------------------------------------------------
+# Corpus and build artifacts
+# ---------------------------------------------------------------------------
+# The corpus is ~78 MB of cloned repos, each with its own nested .git directory.
+# Never commit it. `python scripts/download_corpus.py` rebuilds it byte-for-byte.
+data/raw/
+data/processed/
+data/indexes/
+
+# Qdrant's on-disk storage, created by docker compose
+qdrant_storage/
+
+# Downloaded model weights (bge-small, cross-encoder) - hundreds of MB
+.cache/
+models/
+
+# ---------------------------------------------------------------------------
+# Secrets
+# ---------------------------------------------------------------------------
+# .env holds the real OpenAI key. .env.example is committed as the template.
+.env
+.env.local
+
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# ---------------------------------------------------------------------------
+# OS / editor
+# ---------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp

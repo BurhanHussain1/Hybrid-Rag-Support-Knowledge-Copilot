@@ -1,0 +1,23 @@
+# Qdrant only, for now. Step 8 adds the API and dashboard services so the whole
+# stack comes up with one command.
+#
+#   docker compose up -d          start
+#   docker compose ps             check health
+#   docker compose down           stop (data survives in ./qdrant_storage)
+#
+# Dashboard once running: http://localhost:6333/dashboard
+
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: skc-qdrant
+    restart: unless-stopped
+    ports:
+      - "6333:6333"   # REST API + web dashboard
+      - "6334:6334"   # gRPC, faster for bulk upserts during ingestion
+    volumes:
+      # Bind mount, not a named volume: you can see the index on disk, and
+      # `docker compose down` will not silently delete hours of embedding work.
+      - ./qdrant_storage:/qdrant/storage
+    environment:
+      QDRANT__LOG_LEVEL: INFO
