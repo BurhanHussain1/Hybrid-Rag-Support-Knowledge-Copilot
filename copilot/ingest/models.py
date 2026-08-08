@@ -129,7 +129,16 @@ class Chunk(BaseModel):
         findable. This costs a few tokens and reliably improves retrieval, so the
         embedded text and the displayed text are deliberately different.
         """
-        trail = " > ".join([self.meta.title, *self.heading_path])
+        # Drop consecutive repeats. A document titled "Extending OpenAPI" whose
+        # H1 is also "Extending OpenAPI" would otherwise embed the phrase twice,
+        # which skews the vector toward whatever those words mean and away from
+        # what the chunk actually says.
+        parts: list[str] = []
+        for piece in [self.meta.title, *self.heading_path]:
+            if piece and (not parts or parts[-1].lower() != piece.lower()):
+                parts.append(piece)
+
+        trail = " > ".join(parts)
         return f"{trail}\n\n{self.text}" if trail else self.text
 
     @property

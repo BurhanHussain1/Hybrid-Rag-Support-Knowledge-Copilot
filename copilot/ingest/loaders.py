@@ -99,6 +99,16 @@ _MD_IMAGE = re.compile(r"!\[[^\]]*\]\([^)]*\)")
 _MD_LINK = re.compile(r"\[([^\]]+)\]\([^)]*\)")
 _MD_REF_LINK = re.compile(r"\[([^\]]+)\]\[[^\]]*\]")
 _BADGE_LINE = re.compile(r"^\s*\[!\[.*$", re.MULTILINE)
+# Explicit heading anchors: "## The normal process { #the-normal-process }".
+# FastAPI and Kubernetes both use these. Left in, the anchor id ends up in the
+# section_heading shown to users and in the breadcrumb we embed - repeating the
+# same words in slug form, which adds noise to the vector and reads as a bug.
+_HEADING_ANCHOR = re.compile(r"^(#{1,6}\s+.*?)\s*\{\s*#[^}]*\}\s*$", re.MULTILINE)
+# PyMdown "blocks" markers, used throughout the FastAPI docs to open and close
+# admonitions:  "/// note" ... "///". The text inside is real content; only the
+# markers are noise. (Code blocks are already protected, so a "///" comment in a
+# code sample is safe.)
+_PYMDOWN_BLOCK = re.compile(r"^\s*///.*$", re.MULTILINE)
 _EXTRA_BLANKS = re.compile(r"\n{3,}")
 _TRAILING_WS = re.compile(r"[ \t]+$", re.MULTILINE)
 
@@ -115,6 +125,8 @@ def clean_markdown(text: str) -> str:
     text = _HTML_TAG.sub("", text)
     text = _MD_LINK.sub(r"\1", text)
     text = _MD_REF_LINK.sub(r"\1", text)
+    text = _HEADING_ANCHOR.sub(r"\1", text)
+    text = _PYMDOWN_BLOCK.sub("", text)
 
     text = _TRAILING_WS.sub("", text)
     text = _EXTRA_BLANKS.sub("\n\n", text)

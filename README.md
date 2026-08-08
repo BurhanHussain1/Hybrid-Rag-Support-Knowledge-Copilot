@@ -114,6 +114,10 @@ python scripts/download_corpus.py
 
 # 4. Vector store
 docker compose up -d            # Qdrant dashboard: http://localhost:6333/dashboard
+
+# 5. Chunk the corpus
+python ingest.py --strategy both --rebuild
+python ingest.py --stats
 ```
 
 ---
@@ -133,7 +137,8 @@ traps, and four unrelated products guarantee plenty of questions the corpus hone
 ## Roadmap
 
 - [x] **Step 0** — Repository scaffolding, configuration, Docker, corpus script
-- [ ] **Step 1** — Ingestion: loaders, metadata extraction, chunking strategies, `ingest.py` CLI
+- [x] **Step 1** — Ingestion: loaders, metadata extraction, chunking strategies, `ingest.py` CLI
+      <br>→ 3,544 documents → **25,906 heading chunks** / **28,059 fixed chunks**, 100% with resolved `last_updated`
 - [ ] **Step 2** — Indexing: embeddings into Qdrant, BM25 over the same chunk IDs
 - [ ] **Step 3** — Hybrid retrieval: dense, sparse, RRF fusion, cross-encoder reranking
 - [ ] **Step 4** — Generation: grounded prompt, citation verification, confidence, refusal handling
