@@ -64,6 +64,8 @@ class Settings(BaseSettings):
     chunk_strategy: Literal["heading", "fixed"] = "heading"
     chunk_size: int = 800       # characters, not tokens - simpler to reason about
     chunk_overlap: int = 150    # only used by the "fixed" strategy
+    min_chunk_chars: int = 200  # below this a chunk has too little context to be useful
+    max_chunk_chars: int = 1600  # hard ceiling; oversized heading sections get split
 
     # --- Retrieval --------------------------------------------------------
     dense_top_k: int = 20       # candidates from vector search

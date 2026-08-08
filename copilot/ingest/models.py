@@ -87,3 +87,51 @@ class RawDocument(BaseModel):
                 break
             page = page_no
         return page
+
+
+class Chunk(BaseModel):
+    """One searchable piece of a document.
+
+    This is the unit everything downstream works with: it gets embedded, indexed
+    in BM25, retrieved, reranked, fed to the LLM, and cited by ID. Both indexes
+    point at these same IDs, which is what keeps the fusion layer honest.
+    """
+
+    chunk_id: str = Field(description="Stable ID, e.g. 'k8s-website/tasks/debug/debug-pods#h3'")
+    doc_id: str
+    text: str
+
+    strategy: str = Field(description="'heading' or 'fixed' - recorded so Step 6 can compare them")
+    index: int = Field(description="Position within the document, 0-based")
+
+    char_start: int = Field(description="Offset in the document's clean_text")
+    char_end: int
+
+    heading_path: list[str] = Field(
+        default_factory=list,
+        description="Breadcrumb of headings above this chunk, outermost first",
+    )
+    page: int | None = Field(default=None, description="PDF page number, if applicable")
+
+    meta: DocumentMetadata
+
+    @property
+    def section_heading(self) -> str | None:
+        """The nearest heading above this chunk - shown in citations."""
+        return self.heading_path[-1] if self.heading_path else None
+
+    @property
+    def embedding_text(self) -> str:
+        """What we actually embed - the chunk plus its breadcrumb.
+
+        A chunk that reads "Click Manage channel, then Archive." is meaningless
+        on its own. Prefixed with "Zulip help > Archive a channel", it becomes
+        findable. This costs a few tokens and reliably improves retrieval, so the
+        embedded text and the displayed text are deliberately different.
+        """
+        trail = " > ".join([self.meta.title, *self.heading_path])
+        return f"{trail}\n\n{self.text}" if trail else self.text
+
+    @property
+    def char_count(self) -> int:
+        return len(self.text)
