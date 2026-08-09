@@ -31,7 +31,60 @@ import re
 from copilot.config import settings
 from copilot.ingest.models import Chunk, RawDocument
 
-_HEADING = re.compile(r"^(#{1,6})\s+(.+?)\s*#*$", re.MULTILINE)
+# [ \t]+ and not \s+ — and this distinction is a real bug I shipped and had to
+# fix. \s matches newlines, so on a document containing a bare "##" line (which
+# happens after a Hugo shortcode inside a heading is stripped), the pattern
+# matched across the line break and swallowed the *next* line as the heading
+# text. That produced 78 chunks whose section heading was literally "```".
+# Headings live on one line; the character class should say so.
+_HEADING = re.compile(r"^(#{1,6})[ \t]+(.+?)[ \t]*#*$", re.MULTILINE)
+_FENCE_LINE = re.compile(r"^[ \t]*```", re.MULTILINE)
+
+
+def _fenced_ranges(text: str) -> list[tuple[int, int]]:
+    """Character ranges covered by fenced code blocks.
+
+    Needed because `#` starts a markdown heading *and* a shell comment. Every
+    Kubernetes example like
+
+        ```shell
+        # Create the Role to read the credspec
+        kubectl create role ...
+        ```
+
+    was being read as an H1. Measured on this corpus: 1,150 phantom headings from
+    489 distinct comment strings, including Python comments in the FastAPI docs
+    and file paths in the Zulip docs.
+
+    The damage was invisible but real - phantom headings split chunks in the
+    middle of code examples, and the bogus breadcrumb got prepended to the text
+    we embed, so every affected vector carried a sentence of shell comment as
+    context.
+
+    Fences are paired in order: 1st opens, 2nd closes, and so on. An unclosed
+    final fence is treated as running to the end of the document, which is the
+    safe reading - better to ignore a real heading than to invent a fake one.
+    """
+    marks = [m.start() for m in _FENCE_LINE.finditer(text)]
+    ranges = [(marks[i], marks[i + 1]) for i in range(0, len(marks) - 1, 2)]
+    if len(marks) % 2 == 1:
+        ranges.append((marks[-1], len(text)))
+    return ranges
+
+
+def _inside(position: int, ranges: list[tuple[int, int]]) -> bool:
+    for start, end in ranges:
+        if start > position:
+            return False  # ranges are sorted, so we can stop early
+        if start <= position <= end:
+            return True
+    return False
+
+
+def find_headings(text: str) -> list[re.Match]:
+    """All real markdown headings - those outside code fences."""
+    fences = _fenced_ranges(text)
+    return [m for m in _HEADING.finditer(text) if not _inside(m.start(), fences)]
 
 
 # ---------------------------------------------------------------------------
@@ -186,7 +239,7 @@ def _sections(text: str) -> list[tuple[list[str], int, int]]:
     three. That trail is what makes a chunk understandable on its own - "Archive"
     means nothing; "Zulip help > Channels > Archive" means something.
     """
-    matches = list(_HEADING.finditer(text))
+    matches = find_headings(text)
 
     if not matches:
         return [([], 0, len(text))] if text.strip() else []
@@ -300,7 +353,9 @@ def _heading_at(text: str, offset: int) -> list[str]:
     section a chunk came from. So we look backwards for the headings above it.
     """
     stack: list[tuple[int, str]] = []
-    for match in _HEADING.finditer(text, 0, offset):
+    for match in find_headings(text):
+        if match.start() >= offset:
+            break
         level = len(match.group(1))
         while stack and stack[-1][0] >= level:
             stack.pop()

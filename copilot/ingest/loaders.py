@@ -92,6 +92,25 @@ _HTML_COMMENT = re.compile(r"<!--.*?-->", re.DOTALL)
 # Hugo shortcodes: {{< note >}}, {{% caution %}}, {{< /note >}}. Remove the
 # marker but keep the sentence inside it - the note body is real content.
 _HUGO_SHORTCODE = re.compile(r"\{\{[<%].*?[%>]\}\}", re.DOTALL)
+# Kubernetes wraps code samples in tab shortcodes with NO markdown fence:
+#
+#     {{< tab name="Linux node" codelang="yaml" >}}
+#     # The mount into the container is read-only.
+#     apiVersion: v1
+#     {{< /tab >}}
+#
+# Strip the shortcodes naively and that YAML lands in the prose, where its "#"
+# comments look exactly like markdown headings - 41 phantom headings from this
+# one file. Rather than teach every downstream stage about Hugo, we convert these
+# into real fenced code blocks so the fence-aware logic already in the chunker
+# handles them like any other code.
+#
+# Matched as an open/close pair (not two separate substitutions) so we can never
+# emit an unbalanced fence, which would corrupt fence pairing for the whole file.
+_HUGO_CODE_TAB = re.compile(
+    r"\{\{<\s*tab\s+[^>]*codelang=\"([^\"]*)\"[^>]*>\}\}(.*?)\{\{<\s*/\s*tab\s*>\}\}",
+    re.DOTALL,
+)
 # A tag must start with a letter, which keeps prose like "if x < y and y > z"
 # intact. A naive `<[^>]+>` would silently eat that sentence.
 _HTML_TAG = re.compile(r"</?[A-Za-z][A-Za-z0-9._:-]*(?:\s[^<>]*?)?/?>")
@@ -119,6 +138,9 @@ def clean_markdown(text: str) -> str:
 
     text = _MDX_IMPORT.sub("", text)
     text = _HTML_COMMENT.sub("", text)
+    # Must run before the generic shortcode stripper, which would otherwise
+    # delete the tab markers and leave the code stranded in the prose.
+    text = _HUGO_CODE_TAB.sub(lambda m: f"\n```{m.group(1)}\n{m.group(2).strip()}\n```\n", text)
     text = _HUGO_SHORTCODE.sub("", text)
     text = _BADGE_LINE.sub("", text)
     text = _MD_IMAGE.sub("", text)
@@ -146,8 +168,18 @@ def _read_text(path: Path) -> str:
 
 
 def _first_heading(text: str) -> str | None:
-    match = re.search(r"^#{1,2}\s+(.+)$", text, re.MULTILINE)
-    return match.group(1).strip() if match else None
+    """First real heading, used as a fallback title.
+
+    Skips anything inside a code fence, for the same reason the chunker does: a
+    shell comment like `# Create the Role` is not a heading, and using one as a
+    document title is both wrong and very visible in citations.
+    """
+    from copilot.ingest.chunking import find_headings  # imported here to avoid a cycle
+
+    for match in find_headings(text):
+        if len(match.group(1)) <= 2:  # H1 or H2 only
+            return match.group(2).strip()
+    return None
 
 
 def _title_from_filename(path: Path) -> str:
