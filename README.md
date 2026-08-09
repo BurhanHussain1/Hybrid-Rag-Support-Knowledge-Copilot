@@ -118,6 +118,13 @@ docker compose up -d            # Qdrant dashboard: http://localhost:6333/dashbo
 # 5. Chunk the corpus
 python ingest.py --strategy both --rebuild
 python ingest.py --stats
+
+# 6. Build the indexes (embeddings + BM25)
+python index.py --strategy heading --rebuild
+
+# 7. Try it
+python search.py "why is my pod crashing" --compare
+python search.py "pod stuck in pending state" --explain
 ```
 
 ---
@@ -139,8 +146,10 @@ traps, and four unrelated products guarantee plenty of questions the corpus hone
 - [x] **Step 0** — Repository scaffolding, configuration, Docker, corpus script
 - [x] **Step 1** — Ingestion: loaders, metadata extraction, chunking strategies, `ingest.py` CLI
       <br>→ 3,544 documents → **25,906 heading chunks** / **28,059 fixed chunks**, 100% with resolved `last_updated`
-- [ ] **Step 2** — Indexing: embeddings into Qdrant, BM25 over the same chunk IDs
-- [ ] **Step 3** — Hybrid retrieval: dense, sparse, RRF fusion, cross-encoder reranking
+- [x] **Step 2** — Indexing: embeddings into Qdrant, BM25 over the same chunk IDs
+      <br>→ 25,907 vectors (384-dim cosine) + 1.72M BM25 tokens over one shared ID space
+- [x] **Step 3** — Hybrid retrieval: dense, sparse, RRF fusion, cross-encoder reranking
+      <br>→ warm latency: dense 50ms, sparse 75ms, hybrid 120ms, +rerank 1.3s
 - [ ] **Step 4** — Generation: grounded prompt, citation verification, confidence, refusal handling
 - [ ] **Step 5** — FastAPI service exposing the assistant contract
 - [ ] **Step 6** — Evaluation: golden set, retrieval/answer/citation/refusal metrics, `eval.py`
