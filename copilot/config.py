@@ -80,8 +80,25 @@ class Settings(BaseSettings):
     llm_temperature: float = 0.0  # deterministic: required for meaningful evals
     max_answer_tokens: int = 800
 
+    # --- Citation verification -------------------------------------------
+    # Separate setting from llm_model on purpose. Using one model to write an
+    # answer and then to grade its own citations is circular: it is predisposed
+    # to agree with itself. Pointing this at a different model is the honest fix,
+    # and having it as a knob means the limitation is visible rather than buried.
+    judge_model: str = ""  # empty = use llm_model, and say so in the report
+
     # --- Confidence -------------------------------------------------------
     min_confidence: float = 0.35  # below this the assistant refuses to answer
+
+    # Weights for the four confidence components. They should sum to 1.0;
+    # `ConfidenceScorer` normalises them if they do not, so experimenting is safe.
+    weight_retrieval: float = 0.25
+    weight_citation_support: float = 0.40  # the strongest signal, so the largest weight
+    weight_grounding: float = 0.20
+    weight_completeness: float = 0.15
+
+    # How much to subtract when every cited document is over two years old.
+    staleness_penalty: float = 0.10
 
 
 settings = Settings()

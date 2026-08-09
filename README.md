@@ -150,7 +150,8 @@ traps, and four unrelated products guarantee plenty of questions the corpus hone
       <br>→ 25,907 vectors (384-dim cosine) + 1.72M BM25 tokens over one shared ID space
 - [x] **Step 3** — Hybrid retrieval: dense, sparse, RRF fusion, cross-encoder reranking
       <br>→ warm latency: dense 50ms, sparse 75ms, hybrid 120ms, +rerank 1.3s
-- [ ] **Step 4** — Generation: grounded prompt, citation verification, confidence, refusal handling
+- [x] **Step 4** — Generation: grounded prompt, citation verification, confidence, refusal handling
+      <br>→ verifier scored 6/6 on hand-built cases; ~$0.0007 per answered question
 - [ ] **Step 5** — FastAPI service exposing the assistant contract
 - [ ] **Step 6** — Evaluation: golden set, retrieval/answer/citation/refusal metrics, `eval.py`
 - [ ] **Step 7** — Streamlit dashboard with a dense-vs-hybrid comparison toggle
