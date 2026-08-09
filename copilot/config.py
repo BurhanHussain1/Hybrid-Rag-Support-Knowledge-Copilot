@@ -70,7 +70,26 @@ class Settings(BaseSettings):
     # --- Retrieval --------------------------------------------------------
     dense_top_k: int = 20       # candidates from vector search
     sparse_top_k: int = 20      # candidates from BM25
-    rrf_k: int = 60             # RRF smoothing constant; 60 is the paper default
+    # RRF smoothing constant; 60 is the original paper's default.
+    #
+    # Measured, not assumed. `scripts/sweep_rrf_k.py` over 49 answerable golden
+    # questions:
+    #
+    #        hybrid only    +reranker
+    #   k=1     89.8%         93.9%
+    #   k=60    85.7%         93.9%
+    #   k=200   85.7%         93.9%
+    #
+    # Two findings. Small k does help pure fusion, as one query in Step 3 hinted.
+    # But after reranking the number is identical at every k, because fusion only
+    # has to get the right document into the top-20 candidate pool - the reranker
+    # decides the final order, and every k managed that.
+    #
+    # So we keep 60. The k=1 gain applies only to a mode we do not ship, and 4.1pp
+    # on 49 questions is about two questions - not enough evidence to move a
+    # default. The sweep's real value was learning this knob does not matter here,
+    # which is a better outcome than a tuned number nobody can justify.
+    rrf_k: int = 60
     dense_weight: float = 1.0   # bump to trust semantic search more
     sparse_weight: float = 1.0  # bump to trust keyword search more
     rerank_top_n: int = 20      # how many fused candidates the reranker scores

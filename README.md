@@ -8,9 +8,16 @@ The last part is the point. Producing a plausible answer with plausible-looking 
 Proving each source says what the answer claims it says — and refusing when it does not — is the
 part that makes a retrieval system trustworthy.
 
-> **Headline result:** _pending Step 6._ This line will read something like
-> "hybrid retrieval improved correct-source retrieval from X% to Y% on a 60-question evaluation set."
-> It is written last, from real measurements, not estimated in advance.
+> **Headline result:** the full pipeline — hybrid retrieval plus cross-encoder reranking — found the
+> correct source document for **93.9%** of questions, against **87.8%** for dense-only vector search
+> and **75.5%** for BM25 alone, on a 62-question evaluation set. **79.6%** of the citations it
+> produced survived independent verification, and it correctly decided whether to answer or refuse
+> **93.5%** of the time.
+>
+> The interesting part is what fusion alone did: **RRF without reranking scored 85.7%, slightly
+> *worse* than dense-only.** Merging the two retrievers is not automatically an improvement — the
+> reranker is what converts extra candidates into better answers. Full numbers, per-question-type
+> breakdown and every setting that produced them: [`reports/eval-full.md`](reports/eval-full.md).
 
 ---
 
@@ -169,7 +176,8 @@ traps, and four unrelated products guarantee plenty of questions the corpus hone
       <br>→ verifier scored 6/6 on hand-built cases; ~$0.0007 per answered question
 - [x] **Step 5** — FastAPI service exposing the assistant contract
       <br>→ models preloaded at boot: 26.5s startup once, then `/search` 90ms and `/ask` ~8.5s
-- [ ] **Step 6** — Evaluation: golden set, retrieval/answer/citation/refusal metrics, `eval.py`
+- [x] **Step 6** — Evaluation: golden set, retrieval/answer/citation/refusal metrics, `eval.py`
+      <br>→ 63 questions across 5 types; rerank **93.9%** vs dense **87.8%**; report in `reports/`
 - [ ] **Step 7** — Streamlit dashboard with a dense-vs-hybrid comparison toggle
 - [ ] **Step 8** — Full Docker Compose stack, case study, walkthrough
 

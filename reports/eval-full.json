@@ -1,0 +1,91 @@
+{
+  "started_at": "2026-08-09 18:07 UTC",
+  "config": {
+    "chunk_strategy": "heading",
+    "chunk_size": 800,
+    "chunk_overlap": 150,
+    "min_chunk_chars": 200,
+    "embedding_model": "BAAI/bge-small-en-v1.5",
+    "reranker_model": "cross-encoder/ms-marco-MiniLM-L-6-v2",
+    "llm_model": "gpt-4o-mini",
+    "judge_model": "gpt-4o-mini (same as generator)",
+    "dense_top_k": 20,
+    "sparse_top_k": 20,
+    "rrf_k": 60,
+    "dense_weight": 1.0,
+    "sparse_weight": 1.0,
+    "rerank_top_n": 20,
+    "final_top_k": 5,
+    "min_confidence": 0.35
+  },
+  "questions_scored": 62,
+  "modes": {
+    "dense": {
+      "hit_rate": 0.8775510204081632,
+      "full_recall": 0.7551020408163265,
+      "mrr": 0.7397959183673469,
+      "precision": 0.4302721088435374,
+      "by_category": {
+        "simple_lookup": 0.8,
+        "multi_doc": 1.0,
+        "ambiguous": 1.0,
+        "outdated_trap": 0.9
+      },
+      "mean_latency_ms": 830.4521040800882
+    },
+    "sparse": {
+      "hit_rate": 0.7551020408163265,
+      "full_recall": 0.6326530612244898,
+      "mrr": 0.6078231292517007,
+      "precision": 0.2615646258503401,
+      "by_category": {
+        "simple_lookup": 0.76,
+        "multi_doc": 0.9090909090909091,
+        "ambiguous": 1.0,
+        "outdated_trap": 0.5
+      },
+      "mean_latency_ms": 207.78642858055477
+    },
+    "hybrid": {
+      "hit_rate": 0.8571428571428571,
+      "full_recall": 0.7551020408163265,
+      "mrr": 0.708843537414966,
+      "precision": 0.3982993197278911,
+      "by_category": {
+        "simple_lookup": 0.8,
+        "multi_doc": 1.0,
+        "ambiguous": 1.0,
+        "outdated_trap": 0.8
+      },
+      "mean_latency_ms": 245.91214900684295
+    },
+    "rerank": {
+      "hit_rate": 0.9387755102040817,
+      "full_recall": 0.7959183673469388,
+      "mrr": 0.7989795918367346,
+      "precision": 0.4448979591836735,
+      "by_category": {
+        "simple_lookup": 0.88,
+        "multi_doc": 1.0,
+        "ambiguous": 1.0,
+        "outdated_trap": 1.0
+      },
+      "mean_latency_ms": 2356.947014393399
+    }
+  },
+  "answers": {
+    "n": 62,
+    "refusal_accuracy": 0.9354838709677419,
+    "correct_refusals": 11,
+    "missed_refusals": 2,
+    "false_refusals": 2,
+    "citation_support_rate": 0.7957516339869282,
+    "unsupported_citations": 30,
+    "total_citations": 112,
+    "mention_coverage": 0.45918367346938777,
+    "forbidden_mentions": 0,
+    "mean_confidence_answered": 0.8205489795918367,
+    "mean_confidence_refused": 0.20855384615384615,
+    "errors": 0
+  }
+}
