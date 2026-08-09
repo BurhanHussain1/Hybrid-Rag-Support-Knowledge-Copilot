@@ -1,0 +1,1020 @@
+version: '1'
+created_at: '2026-08-09T17:55:24.961444+00:00'
+corpus_note: Drafted from 25907 chunks (strategy=heading, chunk_size=800). Ground truth is doc-level and
+  survives chunking changes.
+questions:
+- id: q001
+  question: What should I consider to deploy my FastAPI application effectively?
+  category: simple_lookup
+  expected_doc_ids:
+  - fastapi/docs/en/docs/deployment/concepts
+  expected_chunk_ids:
+  - fastapi/docs/en/docs/deployment/concepts#h0
+  should_refuse: false
+  answer_must_mention:
+  - Security - HTTPS
+  - Running on startup
+  - Replication
+  - Memory
+  answer_must_not_mention: []
+  source_name: fastapi
+  notes: The question requires understanding various deployment concepts without specific phrasing from
+    the passage.
+  status: draft
+- id: q002
+  question: How does autoscaling handle increased application load in my cluster?
+  category: simple_lookup
+  expected_doc_ids:
+  - k8s-website/content/en/docs/concepts/cluster-administration/node-autoscaling
+  expected_chunk_ids:
+  - k8s-website/content/en/docs/concepts/cluster-administration/node-autoscaling#h14
+  should_refuse: false
+  answer_must_mention:
+  - creates new Pods
+  - provision new Nodes
+  - average utilization of its Pods
+  answer_must_not_mention: []
+  source_name: k8s-website
+  notes: The question requires understanding the interaction between workload and node autoscaling.
+  status: draft
+- id: q003
+  question: How can I ensure my users have a consistent ID across devices?
+  category: simple_lookup
+  expected_doc_ids:
+  - posthog/contents/docs/product-analytics/identity-resolution
+  expected_chunk_ids:
+  - posthog/contents/docs/product-analytics/identity-resolution#h4
+  should_refuse: false
+  answer_must_mention:
+  - durable ID
+  - server
+  - authentication boundaries
+  - same ID
+  answer_must_not_mention: []
+  source_name: posthog
+  notes: This question addresses the challenge of maintaining user identity across different platforms.
+  status: draft
+- id: q004
+  question: What security improvements were made in Zulip Server 4.4?
+  category: simple_lookup
+  expected_doc_ids:
+  - zulip/docs/overview/changelog
+  expected_chunk_ids:
+  - zulip/docs/overview/changelog#h250
+  should_refuse: false
+  answer_must_mention:
+  - denial-of-service attack
+  - open HTTP proxy
+  - Camo
+  - custom emoji
+  answer_must_not_mention: []
+  source_name: zulip
+  notes: The question requires understanding of multiple fixes related to security.
+  status: draft
+- id: q005
+  question: What languages had their translations updated in the latest release?
+  category: simple_lookup
+  expected_doc_ids:
+  - fastapi/docs/en/docs/release-notes
+  expected_chunk_ids:
+  - fastapi/docs/en/docs/release-notes#h157
+  should_refuse: false
+  answer_must_mention:
+  - Portuguese
+  - Spanish
+  - French
+  - German
+  answer_must_not_mention: []
+  source_name: fastapi
+  notes: The question requires knowledge of multiple updates across different languages.
+  status: draft
+- id: q006
+  question: How does a Gateway handle incoming traffic for backends?
+  category: simple_lookup
+  expected_doc_ids:
+  - k8s-website/content/en/docs/concepts/services-networking/gateway
+  expected_chunk_ids:
+  - k8s-website/content/en/docs/concepts/services-networking/gateway#h4
+  should_refuse: false
+  answer_must_mention:
+  - traffic handling infrastructure
+  - network endpoint
+  - filtering
+  - balancing
+  answer_must_not_mention: []
+  source_name: k8s-website
+  notes: The question requires understanding the Gateway's role in traffic management.
+  status: draft
+- id: q007
+  question: How can I filter results to show dates from last week?
+  category: simple_lookup
+  expected_doc_ids:
+  - posthog/contents/docs/data/property-filters
+  expected_chunk_ids:
+  - posthog/contents/docs/data/property-filters#h4
+  should_refuse: false
+  answer_must_mention:
+  - -1w
+  - relative dates
+  - date operators
+  answer_must_not_mention: []
+  source_name: posthog
+  notes: The user needs to know the specific format for relative dates.
+  status: draft
+- id: q008
+  question: How do I test the goodbye message in my webhook?
+  category: simple_lookup
+  expected_doc_ids:
+  - zulip/docs/webhooks/incoming-webhooks-walkthrough
+  expected_chunk_ids:
+  - zulip/docs/webhooks/incoming-webhooks-walkthrough#h19
+  should_refuse: false
+  answer_must_mention:
+  - test_goodbye_message
+  - expected_topic_name
+  - goodbye.json
+  - featured_title
+  answer_must_not_mention: []
+  source_name: zulip
+  notes: The question requires understanding of both the test function and the fixture used.
+  status: draft
+- id: q009
+  question: Can I use Django with a NoSQL database for my project?
+  category: simple_lookup
+  expected_doc_ids:
+  - fastapi/docs/en/docs/alternatives
+  expected_chunk_ids:
+  - fastapi/docs/en/docs/alternatives#h2
+  should_refuse: false
+  answer_must_mention:
+  - tightly coupled with relational databases
+  - not very easy
+  - NoSQL database
+  answer_must_not_mention: []
+  source_name: fastapi
+  notes: The question addresses compatibility issues with database types.
+  status: draft
+- id: q010
+  question: What happens if I don't follow the memory reservation formula?
+  category: simple_lookup
+  expected_doc_ids:
+  - k8s-website/content/en/docs/tasks/administer-cluster/memory-manager
+  expected_chunk_ids:
+  - k8s-website/content/en/docs/tasks/administer-cluster/memory-manager#h13
+  should_refuse: false
+  answer_must_mention:
+  - Memory Manager
+  - error
+  - startup
+  answer_must_not_mention: []
+  source_name: k8s-website
+  notes: This question is interesting because it addresses user consequences of misconfiguration.
+  status: draft
+- id: q011
+  question: How can I capture events without needing authentication?
+  category: simple_lookup
+  expected_doc_ids:
+  - posthog/contents/docs/api/index
+  expected_chunk_ids:
+  - posthog/contents/docs/api/index#h0
+  should_refuse: false
+  answer_must_mention:
+  - public POST-only endpoints
+  - project token
+  - capture events
+  answer_must_not_mention: []
+  source_name: posthog
+  notes: This question is interesting because it requires understanding the distinction between public
+    and private endpoints.
+  status: draft
+- id: q012
+  question: What changed in the API regarding realm identifiers in Zulip 9.0?
+  category: simple_lookup
+  expected_doc_ids:
+  - zulip/api_docs/changelog
+  expected_chunk_ids:
+  - zulip/api_docs/changelog#h134
+  should_refuse: false
+  answer_must_mention:
+  - realm_uri
+  - realm_url
+  - deprecated alias
+  answer_must_not_mention: []
+  source_name: zulip
+  notes: The question requires understanding of the specific API changes and their implications.
+  status: draft
+- id: q013
+  question: What features did APIStar offer that I might need for my project?
+  category: simple_lookup
+  expected_doc_ids:
+  - fastapi/docs/en/docs/alternatives
+  expected_chunk_ids:
+  - fastapi/docs/en/docs/alternatives#h17
+  should_refuse: false
+  answer_must_mention:
+  - automatic data validation
+  - data serialization
+  - OpenAPI schema generation
+  - Python type hints
+  answer_must_not_mention: []
+  source_name: fastapi
+  notes: The question is interesting because it requires understanding the specific features that make
+    APIStar appealing.
+  status: draft
+- id: q014
+  question: How can I automatically clean up finished jobs in my system?
+  category: simple_lookup
+  expected_doc_ids:
+  - k8s-website/content/en/docs/concepts/workloads/controllers/ttlafterfinished
+  expected_chunk_ids:
+  - k8s-website/content/en/docs/concepts/workloads/controllers/ttlafterfinished#h3
+  should_refuse: false
+  answer_must_mention:
+  - specify this field in the Job manifest
+  - mutating admission webhook
+  - manually set this field
+  - write your own controller
+  answer_must_not_mention: []
+  source_name: k8s-website
+  notes: The question is interesting because it involves multiple methods for cleanup.
+  status: draft
+- id: q015
+  question: How can I change the key for linking logs to a person?
+  category: simple_lookup
+  expected_doc_ids:
+  - posthog/contents/docs/logs/link-person
+  expected_chunk_ids:
+  - posthog/contents/docs/logs/link-person#h7
+  should_refuse: false
+  answer_must_mention:
+  - Settings > Logs
+  - admin access
+  - gear icon
+  - API
+  answer_must_not_mention: []
+  source_name: posthog
+  notes: The question is interesting because it involves multiple methods to achieve the same goal.
+  status: draft
+- id: q016
+  question: How should I address users in Hindi translations?
+  category: simple_lookup
+  expected_doc_ids:
+  - zulip/docs/translating/hindi
+  expected_chunk_ids:
+  - zulip/docs/translating/hindi#h0
+  should_refuse: false
+  answer_must_mention:
+  - Use आप as the second-person pronoun
+  - Don't use तुम or तू
+  answer_must_not_mention: []
+  source_name: zulip
+  notes: The question addresses a common concern in translation regarding formality.
+  status: draft
+- id: q017
+  question: How can I set up FastAPI to work with both staging and production environments?
+  category: simple_lookup
+  expected_doc_ids:
+  - fastapi/docs/en/docs/advanced/behind-a-proxy
+  expected_chunk_ids:
+  - fastapi/docs/en/docs/advanced/behind-a-proxy#h18
+  should_refuse: false
+  answer_must_mention:
+  - custom list of servers
+  - staging and production environment
+  - OpenAPI schema
+  answer_must_not_mention: []
+  source_name: fastapi
+  notes: This question is interesting because it involves understanding advanced configuration options.
+  status: draft
+- id: q018
+  question: How can I check the status of my CertificateSigningRequest?
+  category: simple_lookup
+  expected_doc_ids:
+  - k8s-website/content/en/docs/tasks/tls/managing-tls-in-a-cluster
+  expected_chunk_ids:
+  - k8s-website/content/en/docs/tasks/tls/managing-tls-in-a-cluster#h4
+  should_refuse: false
+  answer_must_mention:
+  - kubectl describe csr
+  - Pending state
+  - my-svc.my-namespace
+  answer_must_not_mention: []
+  source_name: k8s-website
+  notes: The question is interesting as it requires knowledge of specific commands to retrieve the CSR
+    status.
+  status: draft
+- id: q019
+  question: What options do I have for storing user information in PostHog?
+  category: simple_lookup
+  expected_doc_ids:
+  - posthog/contents/docs/libraries/js/config
+  expected_chunk_ids:
+  - posthog/contents/docs/libraries/js/config#h40
+  should_refuse: false
+  answer_must_mention:
+  - localStorage
+  - sessionStorage
+  - cookie
+  - memory
+  answer_must_not_mention: []
+  source_name: posthog
+  notes: The question requires knowledge of multiple storage options, making it more complex.
+  status: draft
+- id: q020
+  question: How can I delete multiple drafts at once?
+  category: simple_lookup
+  expected_doc_ids:
+  - zulip/starlight_help/src/content/docs/view-and-edit-your-message-drafts
+  expected_chunk_ids:
+  - zulip/starlight_help/src/content/docs/view-and-edit-your-message-drafts#h5
+  should_refuse: false
+  answer_must_mention:
+  - Select all drafts
+  - delete icon
+  - checkboxes
+  answer_must_not_mention: []
+  source_name: zulip
+  notes: The question requires understanding of the steps to delete drafts.
+  status: draft
+- id: q021
+  question: How can I handle exceptions in a dependency that uses yield?
+  category: simple_lookup
+  expected_doc_ids:
+  - fastapi/docs/en/docs/tutorial/dependencies/dependencies-with-yield
+  expected_chunk_ids:
+  - fastapi/docs/en/docs/tutorial/dependencies/dependencies-with-yield#h2
+  should_refuse: false
+  answer_must_mention:
+  - try block
+  - except SomeException
+  - finally
+  answer_must_not_mention: []
+  source_name: fastapi
+  notes: This question is interesting because it involves understanding exception handling in a specific
+    context.
+  status: draft
+- id: q022
+  question: How can I automatically adjust the number of nginx replicas based on load?
+  category: simple_lookup
+  expected_doc_ids:
+  - k8s-website/content/en/docs/concepts/workloads/management
+  expected_chunk_ids:
+  - k8s-website/content/en/docs/concepts/workloads/management#h17
+  should_refuse: false
+  answer_must_mention:
+  - kubectl autoscale
+  - min=1
+  - max=3
+  - automatically scaled
+  answer_must_not_mention: []
+  source_name: k8s-website
+  notes: The question is interesting because it involves understanding both manual and automatic scaling.
+  status: draft
+- id: q023
+  question: How can I analyze why users are dropping off during the signup process?
+  category: simple_lookup
+  expected_doc_ids:
+  - posthog/contents/handbook/growth/sales/customer-training
+  expected_chunk_ids:
+  - posthog/contents/handbook/growth/sales/customer-training#h26
+  should_refuse: false
+  answer_must_mention:
+  - PostHog AI moment
+  - users dropping off
+  - step 2 and 3
+  answer_must_not_mention: []
+  source_name: posthog
+  notes: The question requires understanding of user behavior analysis in marketing funnels.
+  status: draft
+- id: q024
+  question: How do I import my Mattermost data into Zulip?
+  category: simple_lookup
+  expected_doc_ids:
+  - zulip/starlight_help/src/content/docs/import-from-mattermost
+  expected_chunk_ids:
+  - zulip/starlight_help/src/content/docs/import-from-mattermost#h13
+  should_refuse: false
+  answer_must_mention:
+  - unzip latest_export.zip
+  - convert_mattermost_data
+  - import
+  - start-server
+  answer_must_not_mention: []
+  source_name: zulip
+  notes: The question is interesting as it requires understanding multiple steps in a process.
+  status: draft
+- id: q025
+  question: What new German translations were added in the latest release?
+  category: simple_lookup
+  expected_doc_ids:
+  - fastapi/docs/en/docs/release-notes
+  expected_chunk_ids:
+  - fastapi/docs/en/docs/release-notes#h419
+  should_refuse: false
+  answer_must_mention:
+  - German translation
+  - docs/de/docs
+  - 'PR #'
+  answer_must_not_mention: []
+  source_name: fastapi
+  notes: The question requires knowledge of specific documents and their updates.
+  status: draft
+- id: q026
+  question: How does FastAPI handle JSON Schema for Pydantic models in OpenAPI versions before and after
+    0.99.0?
+  category: multi_doc
+  expected_doc_ids:
+  - fastapi/docs/en/docs/advanced/additional-responses
+  - fastapi/docs/en/docs/tutorial/schema-extra-example
+  expected_chunk_ids:
+  - fastapi/docs/en/docs/advanced/additional-responses#h2
+  - fastapi/docs/en/docs/tutorial/schema-extra-example#h12
+  should_refuse: false
+  answer_must_mention:
+  - JSON Schema inclusion
+  - examples in Pydantic models
+  - OpenAPI version differences
+  - FastAPI version 0.99.0
+  answer_must_not_mention: []
+  source_name: null
+  notes: This question requires understanding changes in FastAPI's handling of JSON Schema across versions.
+  status: draft
+- id: q027
+  question: How do PersistentVolumeClaims interact with Resource Quotas and VolumeAttributesClasses in
+    Kubernetes?
+  category: multi_doc
+  expected_doc_ids:
+  - k8s-website/content/en/docs/concepts/storage/persistent-volumes
+  - k8s-website/content/en/docs/concepts/policy/resource-quotas
+  expected_chunk_ids:
+  - k8s-website/content/en/docs/concepts/storage/persistent-volumes#h8
+  - k8s-website/content/en/docs/concepts/policy/resource-quotas#h38
+  should_refuse: false
+  answer_must_mention:
+  - PersistentVolumeClaims can be created with a specific VolumeAttributesClass
+  - ResourceQuota tracks quota consumed by PersistentVolumeClaims
+  - scopeSelector field controls PVC's storage resource consumption
+  answer_must_not_mention: []
+  source_name: null
+  notes: This question requires understanding both PVC binding and resource management.
+  status: draft
+- id: q028
+  question: How can I track both revenue trends and user growth using PostHog's tools?
+  category: multi_doc
+  expected_doc_ids:
+  - posthog/contents/handbook/engineering/revenue-and-forecasting
+  - posthog/contents/docs/new-to-posthog/revenue
+  expected_chunk_ids:
+  - posthog/contents/handbook/engineering/revenue-and-forecasting#h0
+  - posthog/contents/docs/new-to-posthog/revenue#h7
+  should_refuse: false
+  answer_must_mention:
+  - revenue dashboards
+  - user growth
+  - monthly active users
+  - retention of users
+  answer_must_not_mention: []
+  source_name: null
+  notes: This question requires integrating insights from both passages about revenue and user metrics.
+  status: draft
+- id: q029
+  question: How can I ensure my commit closes an issue when merged, and what should I consider when applying
+    small fixes?
+  category: multi_doc
+  expected_doc_ids:
+  - zulip/docs/production/modify
+  - zulip/docs/git/using
+  expected_chunk_ids:
+  - zulip/docs/production/modify#h8
+  - zulip/docs/git/using#h11
+  should_refuse: false
+  answer_must_mention:
+  - commit ID
+  - automatically close the referenced issue
+  - applying a change to their production system
+  - support changes in stable release branches
+  answer_must_not_mention: []
+  source_name: null
+  notes: This question requires understanding both commit practices and the implications of applying changes.
+  status: draft
+- id: q030
+  question: What are the limitations of CNI plugins on Windows and how do they affect network security
+    policies?
+  category: multi_doc
+  expected_doc_ids:
+  - k8s-website/content/en/docs/concepts/services-networking/windows-networking
+  - k8s-website/content/en/docs/concepts/security/security-checklist
+  expected_chunk_ids:
+  - k8s-website/content/en/docs/concepts/services-networking/windows-networking#h17
+  - k8s-website/content/en/docs/concepts/security/security-checklist#h3
+  should_refuse: false
+  answer_must_mention:
+  - Windows reference network plugins do not implement CNI spec v0.4.0
+  - Network Policies can restrict pod communication
+  - Not all CNI plugins provide encryption in transit
+  answer_must_not_mention: []
+  source_name: null
+  notes: This question requires understanding both technical limitations and security implications.
+  status: draft
+- id: q031
+  question: How do I set up PostHog in a React Native app and what are the differences in versions?
+  category: multi_doc
+  expected_doc_ids:
+  - posthog/contents/docs/libraries/react-native/index
+  - posthog/contents/docs/integrate/_snippets/install-react-native
+  expected_chunk_ids:
+  - posthog/contents/docs/libraries/react-native/index#h55
+  - posthog/contents/docs/integrate/_snippets/install-react-native#h4
+  should_refuse: false
+  answer_must_mention:
+  - PostHogProvider
+  - usePostHog hook
+  - V3 Setup
+  - V4 Setup
+  answer_must_not_mention: []
+  source_name: null
+  notes: This question requires understanding both setup methods and version differences.
+  status: draft
+- id: q032
+  question: How do I update my server's registration and set up SSL certificates for my Zulip server?
+  category: multi_doc
+  expected_doc_ids:
+  - zulip/docs/production/mobile-push-notifications
+  - zulip/docs/production/ssl-certificates
+  expected_chunk_ids:
+  - zulip/docs/production/mobile-push-notifications#h20
+  - zulip/docs/production/ssl-certificates#h5
+  should_refuse: false
+  answer_must_mention:
+  - update server's registration
+  - run manage.py register_server
+  - setup-certbot command
+  - contact email address
+  answer_must_not_mention: []
+  source_name: null
+  notes: This question requires knowledge of both server registration and SSL setup processes.
+  status: draft
+- id: q033
+  question: How does using asynchronous code in FastAPI improve performance compared to traditional processes
+    managing multiple requests?
+  category: multi_doc
+  expected_doc_ids:
+  - fastapi/docs/en/docs/async
+  - fastapi/docs/en/docs/deployment/concepts
+  expected_chunk_ids:
+  - fastapi/docs/en/docs/async#h14
+  - fastapi/docs/en/docs/deployment/concepts#h22
+  should_refuse: false
+  answer_must_mention:
+  - asynchronous code
+  - Manager Process
+  - Worker Processes
+  - CPU utilization
+  answer_must_not_mention: []
+  source_name: null
+  notes: This question requires understanding both async programming benefits and process management.
+  status: draft
+- id: q034
+  question: How does Kubernetes handle versioning for device metadata and storage versions in the API?
+  category: multi_doc
+  expected_doc_ids:
+  - k8s-website/content/en/docs/concepts/scheduling-eviction/dynamic-resource-allocation
+  - k8s-website/content/en/docs/concepts/overview/working-with-objects/storage-version
+  expected_chunk_ids:
+  - k8s-website/content/en/docs/concepts/scheduling-eviction/dynamic-resource-allocation#h89
+  - k8s-website/content/en/docs/concepts/overview/working-with-objects/storage-version#h0
+  should_refuse: false
+  answer_must_mention:
+  - versioned JSON
+  - metadata.generation
+  - storage version
+  - automatic conversion
+  answer_must_not_mention: []
+  source_name: null
+  notes: This question requires understanding both device metadata handling and object storage in Kubernetes.
+  status: draft
+- id: q035
+  question: How do issues with request bodies in the fetch wrapper relate to managing request context
+    in Go?
+  category: multi_doc
+  expected_doc_ids:
+  - posthog/contents/handbook/company/post-mortems/2026-01-17-replay-sdk-fetch-wrapper-incident
+  - posthog/contents/docs/libraries/go/index
+  expected_chunk_ids:
+  - posthog/contents/handbook/company/post-mortems/2026-01-17-replay-sdk-fetch-wrapper-incident#h7
+  - posthog/contents/docs/libraries/go/index#h7
+  should_refuse: false
+  answer_must_mention:
+  - request body consumed multiple times
+  - mismatching boundaries for FormData
+  - ignore tracing headers
+  - request metadata
+  answer_must_not_mention: []
+  source_name: null
+  notes: This question connects issues in JavaScript with context management in Go, requiring understanding
+    of both systems.
+  status: draft
+- id: q036
+  question: How can I contribute to Zulip and help promote it effectively?
+  category: multi_doc
+  expected_doc_ids:
+  - zulip/docs/contributing/counting-contributions
+  - zulip/starlight_help/src/content/docs/support-zulip-project
+  expected_chunk_ids:
+  - zulip/docs/contributing/counting-contributions#h6
+  - zulip/starlight_help/src/content/docs/support-zulip-project#h2
+  should_refuse: false
+  answer_must_mention:
+  - attribution for non-code contributions
+  - linking to Zulip from your organization's website
+  answer_must_not_mention: []
+  source_name: null
+  notes: This question requires understanding both contribution methods and promotional strategies.
+  status: draft
+- id: q037
+  question: How do I fix broken preview builds?
+  category: ambiguous
+  expected_doc_ids:
+  - fastapi/docs/en/docs/release-notes
+  - posthog/contents/handbook/engineering/posthog-com/developing-the-website
+  expected_chunk_ids:
+  - fastapi/docs/en/docs/release-notes#h757
+  - posthog/contents/handbook/engineering/posthog-com/developing-the-website#h9
+  should_refuse: false
+  answer_must_mention:
+  - add the no-cache label to the PR
+  - run a clean build from scratch
+  - cleanup after upgrade
+  answer_must_not_mention: []
+  source_name: null
+  notes: The question is ambiguous as both passages discuss fixing preview builds but in different contexts.
+  status: draft
+- id: q038
+  question: How can I ensure unique operation IDs or names in my API?
+  category: ambiguous
+  expected_doc_ids:
+  - fastapi/docs/en/docs/advanced/generate-clients
+  - k8s-website/content/en/docs/concepts/overview/working-with-objects/names
+  expected_chunk_ids:
+  - fastapi/docs/en/docs/advanced/generate-clients#h12
+  - k8s-website/content/en/docs/concepts/overview/working-with-objects/names#h1
+  should_refuse: false
+  answer_must_mention:
+  - unique
+  - operation IDs
+  - names
+  - API versions
+  answer_must_not_mention: []
+  source_name: null
+  notes: The question is ambiguous as it could refer to either SDK generation or Kubernetes object naming.
+  status: draft
+- id: q039
+  question: How do I check the status of my running processes?
+  category: ambiguous
+  expected_doc_ids:
+  - k8s-website/content/en/docs/tasks/configure-pod-container/configure-volume-storage
+  - posthog/contents/handbook/engineering/deployments-support
+  expected_chunk_ids:
+  - k8s-website/content/en/docs/tasks/configure-pod-container/configure-volume-storage#h2
+  - posthog/contents/handbook/engineering/deployments-support#h4
+  should_refuse: false
+  answer_must_mention:
+  - list the running processes
+  - ps aux
+  - check the status of deployments
+  answer_must_not_mention: []
+  source_name: null
+  notes: The question is ambiguous as it could refer to checking processes in a shell or deployment status.
+  status: rejected
+- id: q040
+  question: What feedback do you have about the onboarding process for new team members?
+  category: ambiguous
+  expected_doc_ids:
+  - posthog/contents/handbook/product/product-manager-onboarding
+  - zulip/docs/contributing/suggesting-features
+  expected_chunk_ids:
+  - posthog/contents/handbook/product/product-manager-onboarding#h8
+  - zulip/docs/contributing/suggesting-features#h4
+  should_refuse: false
+  answer_must_mention:
+  - onboarding buddy
+  - evaluation process
+  - first impressions
+  - pros and cons
+  answer_must_not_mention: []
+  source_name: null
+  notes: The question is ambiguous as it could refer to onboarding in either product.
+  status: draft
+- id: q041
+  question: How can I receive files in my FastAPI application?
+  category: outdated_trap
+  expected_doc_ids:
+  - fastapi/docs/en/docs/reference/uploadfile
+  expected_chunk_ids:
+  - fastapi/docs/en/docs/reference/uploadfile#h0
+  should_refuse: false
+  answer_must_mention:
+  - UploadFile
+  - path operation function
+  - import from fastapi
+  answer_must_not_mention: []
+  source_name: fastapi
+  notes: Answer lives in a document last updated 842 days ago. A good answer flags its age. The question
+    requires understanding of how to use the UploadFile class in FastAPI.
+  status: draft
+- id: q042
+  question: How can I make my pod see updates to a ConfigMap immediately?
+  category: outdated_trap
+  expected_doc_ids:
+  - k8s-website/content/en/docs/tasks/configure-pod-container/configure-pod-configmap
+  expected_chunk_ids:
+  - k8s-website/content/en/docs/tasks/configure-pod-container/configure-pod-configmap#h28
+  should_refuse: false
+  answer_must_mention:
+  - trigger an immediate refresh
+  - updating one of the pod's annotations
+  - kubelet sync period
+  - TTL of ConfigMaps cache
+  answer_must_not_mention: []
+  source_name: k8s-website
+  notes: Answer lives in a document last updated 986 days ago. A good answer flags its age. The question
+    is interesting because it involves understanding the timing of updates and how to force a refresh.
+  status: draft
+- id: q043
+  question: Are the errors related to ClickHouse and Kafka serious?
+  category: outdated_trap
+  expected_doc_ids:
+  - posthog/contents/docs/self-host/deploy/troubleshooting
+  expected_chunk_ids:
+  - posthog/contents/docs/self-host/deploy/troubleshooting#h1
+  should_refuse: false
+  answer_must_mention:
+  - safe to ignore
+  - log entries
+  - noise
+  answer_must_not_mention: []
+  source_name: posthog
+  notes: Answer lives in a document last updated 942 days ago. A good answer flags its age. The user may
+    not know which errors can be disregarded.
+  status: draft
+- id: q044
+  question: How can I see changes made on the main branch since my topic branch was created?
+  category: outdated_trap
+  expected_doc_ids:
+  - zulip/docs/git/reviewing
+  expected_chunk_ids:
+  - zulip/docs/git/reviewing#h3
+  should_refuse: false
+  answer_must_mention:
+  - git diff topic...main
+  - changes on main branch
+  - topic branch was created
+  answer_must_not_mention: []
+  source_name: zulip
+  notes: Answer lives in a document last updated 1803 days ago. A good answer flags its age. The question
+    requires understanding of git commands and branch relationships.
+  status: draft
+- id: q045
+  question: How can I show an error to the client in FastAPI?
+  category: outdated_trap
+  expected_doc_ids:
+  - fastapi/docs/en/docs/reference/exceptions
+  expected_chunk_ids:
+  - fastapi/docs/en/docs/reference/exceptions#h0
+  should_refuse: false
+  answer_must_mention:
+  - HTTPException
+  - WebSocketException
+  - abort a request
+  answer_must_not_mention: []
+  source_name: fastapi
+  notes: Answer lives in a document last updated 842 days ago. A good answer flags its age. The question
+    is interesting as it requires understanding of exception handling in FastAPI.
+  status: draft
+- id: q046
+  question: How does kube-scheduler choose between nodes with the same score?
+  category: outdated_trap
+  expected_doc_ids:
+  - k8s-website/content/en/docs/concepts/scheduling-eviction/kube-scheduler
+  expected_chunk_ids:
+  - k8s-website/content/en/docs/concepts/scheduling-eviction/kube-scheduler#h4
+  should_refuse: false
+  answer_must_mention:
+  - assigns the Pod
+  - highest ranking
+  - selects one of these at random
+  answer_must_not_mention: []
+  source_name: k8s-website
+  notes: Answer lives in a document last updated 904 days ago. A good answer flags its age. The question
+    requires understanding of the tie-breaking mechanism in scheduling.
+  status: draft
+- id: q047
+  question: How do I set up a Cluster Issuer for TLS certificates?
+  category: outdated_trap
+  expected_doc_ids:
+  - posthog/contents/docs/self-host/_snippets/install-cluster-issuer
+  expected_chunk_ids:
+  - posthog/contents/docs/self-host/_snippets/install-cluster-issuer#h0
+  should_refuse: false
+  answer_must_mention:
+  - create a new file
+  - replace with a valid email address
+  - deploy this new resource
+  answer_must_not_mention: []
+  source_name: posthog
+  notes: Answer lives in a document last updated 1278 days ago. A good answer flags its age. The question
+    requires understanding the setup process and specific steps.
+  status: draft
+- id: q048
+  question: How can I delete review branches in Zulip?
+  category: outdated_trap
+  expected_doc_ids:
+  - zulip/docs/git/zulip-tools
+  expected_chunk_ids:
+  - zulip/docs/git/zulip-tools#h7
+  should_refuse: false
+  answer_must_mention:
+  - run the script
+  - --reviews
+  - removing review branches
+  answer_must_not_mention: []
+  source_name: zulip
+  notes: Answer lives in a document last updated 760 days ago. A good answer flags its age. Users may
+    not know the specific flag needed to delete review branches.
+  status: draft
+- id: q049
+  question: How can I access query parameters in my FastAPI application?
+  category: outdated_trap
+  expected_doc_ids:
+  - fastapi/docs/en/docs/reference/parameters
+  expected_chunk_ids:
+  - fastapi/docs/en/docs/reference/parameters#h0
+  should_refuse: false
+  answer_must_mention:
+  - Query()
+  - import them directly from fastapi
+  answer_must_not_mention: []
+  source_name: fastapi
+  notes: Answer lives in a document last updated 842 days ago. A good answer flags its age. The question
+    is interesting as it requires understanding of specific functions for accessing request data.
+  status: draft
+- id: q050
+  question: How can I delete a deployment without affecting other resources?
+  category: outdated_trap
+  expected_doc_ids:
+  - k8s-website/content/en/docs/tasks/administer-cluster/use-cascading-deletion
+  expected_chunk_ids:
+  - k8s-website/content/en/docs/tasks/administer-cluster/use-cascading-deletion#h3
+  should_refuse: false
+  answer_must_mention:
+  - background cascading deletion
+  - kubectl
+  - Kubernetes API
+  answer_must_not_mention: []
+  source_name: k8s-website
+  notes: Answer lives in a document last updated 1305 days ago. A good answer flags its age. The question
+    is interesting as it addresses user concerns about resource management.
+  status: draft
+- id: q051
+  question: What is the pricing for Kubernetes support plans?
+  category: no_answer
+  expected_doc_ids: []
+  expected_chunk_ids: []
+  should_refuse: true
+  answer_must_mention: []
+  answer_must_not_mention: []
+  source_name: null
+  notes: 'Confirmed unanswerable: best retrieval score -1.3, below the 2.0 relevance threshold.'
+  status: draft
+- id: q052
+  question: Can you provide a roadmap for future FastAPI features?
+  category: no_answer
+  expected_doc_ids: []
+  expected_chunk_ids: []
+  should_refuse: true
+  answer_must_mention: []
+  answer_must_not_mention: []
+  source_name: null
+  notes: 'Confirmed unanswerable: best retrieval score 0.1, below the 2.0 relevance threshold.'
+  status: draft
+- id: q053
+  question: Can you provide a refund for my FastAPI course?
+  category: no_answer
+  expected_doc_ids: []
+  expected_chunk_ids: []
+  should_refuse: true
+  answer_must_mention: []
+  answer_must_not_mention: []
+  source_name: null
+  notes: 'Confirmed unanswerable: best retrieval score -5.2, below the 2.0 relevance threshold.'
+  status: draft
+- id: q054
+  question: What is the best way to migrate from another API framework to FastAPI?
+  category: no_answer
+  expected_doc_ids: []
+  expected_chunk_ids: []
+  should_refuse: true
+  answer_must_mention: []
+  answer_must_not_mention: []
+  source_name: null
+  notes: 'Confirmed unanswerable: best retrieval score 0.6, below the 2.0 relevance threshold.'
+  status: draft
+- id: q055
+  question: How do I contact support for my personal account issues?
+  category: no_answer
+  expected_doc_ids: []
+  expected_chunk_ids: []
+  should_refuse: true
+  answer_must_mention: []
+  answer_must_not_mention: []
+  source_name: null
+  notes: 'Confirmed unanswerable: best retrieval score -2.2, below the 2.0 relevance threshold.'
+  status: draft
+- id: q056
+  question: What are the compensation packages for interns at PostHog?
+  category: no_answer
+  expected_doc_ids: []
+  expected_chunk_ids: []
+  should_refuse: true
+  answer_must_mention: []
+  answer_must_not_mention: []
+  source_name: null
+  notes: 'Confirmed unanswerable: best retrieval score 1.2, below the 2.0 relevance threshold.'
+  status: draft
+- id: q057
+  question: Can you provide a list of all known bugs in the latest Kubernetes release?
+  category: no_answer
+  expected_doc_ids: []
+  expected_chunk_ids: []
+  should_refuse: true
+  answer_must_mention: []
+  answer_must_not_mention: []
+  source_name: null
+  notes: 'Confirmed unanswerable: best retrieval score 0.4, below the 2.0 relevance threshold.'
+  status: draft
+- id: q058
+  question: What is the expected growth rate for PostHog in the next year?
+  category: no_answer
+  expected_doc_ids: []
+  expected_chunk_ids: []
+  should_refuse: true
+  answer_must_mention: []
+  answer_must_not_mention: []
+  source_name: null
+  notes: 'Confirmed unanswerable: best retrieval score 0.5, below the 2.0 relevance threshold.'
+  status: draft
+- id: q059
+  question: How do I handle personal data in FastAPI applications?
+  category: no_answer
+  expected_doc_ids: []
+  expected_chunk_ids: []
+  should_refuse: true
+  answer_must_mention: []
+  answer_must_not_mention: []
+  source_name: null
+  notes: 'Confirmed unanswerable: best retrieval score 0.3, below the 2.0 relevance threshold.'
+  status: draft
+- id: q060
+  question: What is the process for filing a complaint about PostHog's services?
+  category: no_answer
+  expected_doc_ids: []
+  expected_chunk_ids: []
+  should_refuse: true
+  answer_must_mention: []
+  answer_must_not_mention: []
+  source_name: null
+  notes: 'Confirmed unanswerable: best retrieval score 1.2, below the 2.0 relevance threshold.'
+  status: draft
+- id: q061
+  question: What are the legal considerations for using FastAPI in healthcare applications?
+  category: no_answer
+  expected_doc_ids: []
+  expected_chunk_ids: []
+  should_refuse: true
+  answer_must_mention: []
+  answer_must_not_mention: []
+  source_name: null
+  notes: 'Confirmed unanswerable: best retrieval score -1.1, below the 2.0 relevance threshold.'
+  status: draft
+- id: q062
+  question: What is the expected timeline for Kubernetes 2.0?
+  category: no_answer
+  expected_doc_ids: []
+  expected_chunk_ids: []
+  should_refuse: true
+  answer_must_mention: []
+  answer_must_not_mention: []
+  source_name: null
+  notes: 'Confirmed unanswerable: best retrieval score -1.8, below the 2.0 relevance threshold.'
+  status: draft
+- id: q063
+  question: Can you provide a list of all FastAPI plugins available?
+  category: no_answer
+  expected_doc_ids: []
+  expected_chunk_ids: []
+  should_refuse: true
+  answer_must_mention: []
+  answer_must_not_mention: []
+  source_name: null
+  notes: 'Confirmed unanswerable: best retrieval score 0.9, below the 2.0 relevance threshold.'
+  status: draft
