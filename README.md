@@ -144,6 +144,26 @@ python eval.py                  # retrieval only, free
 python eval.py --full --json    # adds generation + citation checks, ~$0.03
 ```
 
+### Or run the whole stack in Docker
+
+Steps 1–6 above still have to happen on the host — the containers serve the indexes, they don't
+build them. Once `data/` and Qdrant are populated:
+
+```bash
+docker compose up -d --build    # Qdrant + API + dashboard
+docker compose ps               # api reports healthy once models are loaded
+```
+
+| | |
+|---|---|
+| Dashboard | http://localhost:8501 |
+| API docs | http://localhost:8000/docs |
+| Qdrant | http://localhost:6333/dashboard |
+
+The API's healthcheck hits `/health`, which verifies Qdrant reachability, the chunk count and the
+BM25 file — so `docker compose ps` reporting healthy means it can actually answer, not just that the
+process is alive. The dashboard waits on that healthcheck rather than on container start.
+
 ### API
 
 | Endpoint | Purpose |
@@ -187,7 +207,8 @@ traps, and four unrelated products guarantee plenty of questions the corpus hone
       <br>→ 63 questions across 5 types; rerank **93.9%** vs dense **87.8%**; report in `reports/`
 - [x] **Step 7** — Streamlit dashboard with a dense-vs-hybrid comparison toggle
       <br>→ four tabs: answer + confidence breakdown, citation verdicts, retrieved chunks, mode comparison
-- [ ] **Step 8** — Full Docker Compose stack, case study, walkthrough
+- [x] **Step 8** — Full Docker Compose stack and case study
+      <br>→ `docker compose up -d --build` runs Qdrant + API + dashboard; write-up in [`CASE_STUDY.md`](CASE_STUDY.md)
 
 ---
 

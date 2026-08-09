@@ -61,6 +61,22 @@ async def lifespan(app: FastAPI):
     started = time.perf_counter()
     print("starting up: loading models and indexes...")
 
+    # Wait for Qdrant before touching it.
+    #
+    # Needed for docker-compose: `depends_on` only guarantees the qdrant container
+    # has been *started*, not that it is accepting connections. Without this the
+    # API's warmup races Qdrant's boot, loses roughly half the time, and comes up
+    # reporting degraded until someone restarts it.
+    store = VectorStore()
+    for attempt in range(30):
+        if store.ping():
+            break
+        if attempt == 0:
+            print(f"  waiting for Qdrant at {settings.qdrant_url}...")
+        time.sleep(2)
+    else:
+        print(f"  Qdrant never became reachable at {settings.qdrant_url}")
+
     copilot = Copilot()
 
     try:

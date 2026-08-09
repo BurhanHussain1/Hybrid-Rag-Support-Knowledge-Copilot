@@ -35,10 +35,15 @@ from __future__ import annotations
 
 import time
 
+import os
+
 import requests
 import streamlit as st
 
-DEFAULT_API = "http://127.0.0.1:8000"
+# Inside docker-compose the API is reachable as http://api:8000, not localhost -
+# localhost inside this container is this container. Read from the environment so
+# the same code works both ways, with the local default when nothing is set.
+DEFAULT_API = os.environ.get("COPILOT_API_URL", "http://127.0.0.1:8000")
 MODES = ["rerank", "hybrid", "dense", "sparse"]
 
 VERDICT_STYLE = {

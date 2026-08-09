@@ -1,0 +1,48 @@
+# Everything here is excluded from the build context - the tarball Docker sends to
+# the daemon before it runs a single instruction.
+#
+# Without this file the context is roughly 1.4 GB: the 1 GB virtualenv, the 264 MB
+# corpus with four .git directories, and the built indexes. Every one of those is
+# either rebuilt inside the image or mounted at runtime, so shipping them makes the
+# build slow and the image enormous for no benefit.
+
+# Virtualenv - the image installs its own, for Linux
+.venv/
+venv/
+
+# Corpus and indexes - mounted as a volume at runtime, not baked in.
+# Baking them in would also mean rebuilding the image every time you re-ingest.
+data/raw/
+data/processed/
+data/indexes/
+qdrant_storage/
+
+# Model weights - downloaded into a named volume on first run so they survive
+# rebuilds. Copying them in would add ~500 MB to every layer.
+.cache/
+models/
+
+# Secrets. The API key is passed as an environment variable at runtime; an image
+# with a key baked into a layer is an image that leaks a key.
+.env
+.env.local
+
+# Python noise
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Git and editors
+.git/
+.gitignore
+.github/
+.vscode/
+.idea/
+
+# Docs and reports - not needed to run the service
+reports/
+*.md
+!README.md

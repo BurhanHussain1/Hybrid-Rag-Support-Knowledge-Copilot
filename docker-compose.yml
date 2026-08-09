@@ -1,11 +1,20 @@
-# Qdrant only, for now. Step 8 adds the API and dashboard services so the whole
-# stack comes up with one command.
+# The whole stack: vector store, API, dashboard.
 #
-#   docker compose up -d          start
-#   docker compose ps             check health
-#   docker compose down           stop (data survives in ./qdrant_storage)
+#   docker compose up -d --build     start everything
+#   docker compose ps                check health
+#   docker compose logs -f api       follow the API
+#   docker compose down              stop (indexes survive on disk)
 #
-# Dashboard once running: http://localhost:6333/dashboard
+#   Dashboard  http://localhost:8501
+#   API docs   http://localhost:8000/docs
+#   Qdrant     http://localhost:6333/dashboard
+#
+# ONE THING TO KNOW BEFORE YOU RUN THIS
+# -------------------------------------
+# The containers do not build the indexes. Qdrant needs its collection populated
+# and BM25 needs its pickle file, both of which are produced by ingest.py and
+# index.py. Run those on the host first (see README). The API reports `degraded`
+# on /health rather than pretending otherwise if they are missing.
 
 services:
   qdrant:
@@ -21,3 +30,65 @@ services:
       - ./qdrant_storage:/qdrant/storage
     environment:
       QDRANT__LOG_LEVEL: INFO
+
+  api:
+    build: .
+    container_name: skc-api
+    restart: unless-stopped
+    command: ["python", "serve.py", "--host", "0.0.0.0", "--port", "8000"]
+    ports:
+      - "8000:8000"
+    environment:
+      # http://qdrant:6333, not localhost. Inside the compose network each service
+      # is reachable by its service name; localhost would be the API container
+      # itself, which is not running a vector database.
+      QDRANT_URL: http://qdrant:6333
+      QDRANT_COLLECTION: ${QDRANT_COLLECTION:-support_chunks}
+      # Passed through from the host, never baked into the image.
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      JUDGE_MODEL: ${JUDGE_MODEL:-}
+      CHUNK_STRATEGY: ${CHUNK_STRATEGY:-heading}
+    volumes:
+      # The BM25 index is a file on disk, so the container needs to see it.
+      - ./data:/app/data
+      # Model weights persist across rebuilds instead of re-downloading 220 MB.
+      - hf-models:/models
+    depends_on:
+      - qdrant
+    healthcheck:
+      # Hits the real health endpoint, which checks Qdrant, the chunk count and
+      # the BM25 file - not just "is the process alive".
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      # Generous, because startup loads three models before serving traffic.
+      start_period: 180s
+
+  dashboard:
+    build: .
+    container_name: skc-dashboard
+    restart: unless-stopped
+    command:
+      - streamlit
+      - run
+      - dashboard.py
+      - --server.port=8501
+      - --server.address=0.0.0.0
+      - --server.headless=true
+      - --browser.gatherUsageStats=false
+    ports:
+      - "8501:8501"
+    environment:
+      # The browser talks to localhost:8000, but this container talks to api:8000.
+      COPILOT_API_URL: http://api:8000
+    depends_on:
+      api:
+        # Waits for the healthcheck above, not merely for the container to start,
+        # so the dashboard never opens against an API still loading models.
+        condition: service_healthy
+    volumes:
+      - ./data:/app/data
+
+volumes:
+  hf-models:
