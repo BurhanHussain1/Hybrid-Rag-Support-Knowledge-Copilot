@@ -12,7 +12,7 @@ they drift apart.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, computed_field
 
 
 class Citation(BaseModel):
@@ -38,6 +38,17 @@ class Citation(BaseModel):
     verdict_reason: str | None = None
     claim: str | None = Field(default=None, description="The sentence this citation was attached to")
 
+    # @computed_field, not a plain @property.
+    #
+    # A plain @property works fine inside Python and vanishes from the JSON:
+    # pydantic serialises declared fields only. The API returned citations with no
+    # breadcrumb and no staleness flag, which the dashboard in Step 7 needs, and
+    # nothing errored - the keys were simply absent.
+    #
+    # @computed_field includes them in model_dump()/model_dump_json() and in the
+    # OpenAPI schema, while still being derived rather than stored.
+
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def breadcrumb(self) -> str:
         parts = [p for p in (self.title, self.section_heading) if p]
@@ -47,6 +58,7 @@ class Citation(BaseModel):
                 seen.append(part)
         return " > ".join(seen)
 
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def is_stale(self) -> bool:
         """Older than two years. A signal, not a verdict - old docs can be correct."""

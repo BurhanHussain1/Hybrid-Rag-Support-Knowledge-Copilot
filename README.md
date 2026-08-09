@@ -122,10 +122,25 @@ python ingest.py --stats
 # 6. Build the indexes (embeddings + BM25)
 python index.py --strategy heading --rebuild
 
-# 7. Try it
+# 7. Try it from the CLI
 python search.py "why is my pod crashing" --compare
-python search.py "pod stuck in pending state" --explain
+python ask.py "why is my pod stuck in pending"
+
+# 8. Or run the API
+python serve.py                 # docs at http://localhost:8000/docs
 ```
+
+### API
+
+| Endpoint | Purpose |
+|---|---|
+| `POST /ask` | Full contract: answer, verified citations, confidence breakdown, unverified list |
+| `POST /search` | Retrieval only — no LLM call, for the dense-vs-hybrid comparison |
+| `GET /health` | Reports Qdrant reachability, chunk count, BM25 presence, key configured |
+| `GET /stats` | Every active retrieval setting, so a result can be reproduced |
+
+A refusal is a normal `200` with `answered: false` — the question was valid and the
+answer was honest, so nothing faulted.
 
 ---
 
@@ -152,7 +167,8 @@ traps, and four unrelated products guarantee plenty of questions the corpus hone
       <br>→ warm latency: dense 50ms, sparse 75ms, hybrid 120ms, +rerank 1.3s
 - [x] **Step 4** — Generation: grounded prompt, citation verification, confidence, refusal handling
       <br>→ verifier scored 6/6 on hand-built cases; ~$0.0007 per answered question
-- [ ] **Step 5** — FastAPI service exposing the assistant contract
+- [x] **Step 5** — FastAPI service exposing the assistant contract
+      <br>→ models preloaded at boot: 26.5s startup once, then `/search` 90ms and `/ask` ~8.5s
 - [ ] **Step 6** — Evaluation: golden set, retrieval/answer/citation/refusal metrics, `eval.py`
 - [ ] **Step 7** — Streamlit dashboard with a dense-vs-hybrid comparison toggle
 - [ ] **Step 8** — Full Docker Compose stack, case study, walkthrough
