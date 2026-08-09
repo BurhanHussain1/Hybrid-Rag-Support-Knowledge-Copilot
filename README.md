@@ -135,6 +135,13 @@ python ask.py "why is my pod stuck in pending"
 
 # 8. Or run the API
 python serve.py                 # docs at http://localhost:8000/docs
+
+# 9. And the dashboard (needs the API running)
+streamlit run dashboard.py      # http://localhost:8501
+
+# 10. Measure it
+python eval.py                  # retrieval only, free
+python eval.py --full --json    # adds generation + citation checks, ~$0.03
 ```
 
 ### API
@@ -178,7 +185,8 @@ traps, and four unrelated products guarantee plenty of questions the corpus hone
       <br>→ models preloaded at boot: 26.5s startup once, then `/search` 90ms and `/ask` ~8.5s
 - [x] **Step 6** — Evaluation: golden set, retrieval/answer/citation/refusal metrics, `eval.py`
       <br>→ 63 questions across 5 types; rerank **93.9%** vs dense **87.8%**; report in `reports/`
-- [ ] **Step 7** — Streamlit dashboard with a dense-vs-hybrid comparison toggle
+- [x] **Step 7** — Streamlit dashboard with a dense-vs-hybrid comparison toggle
+      <br>→ four tabs: answer + confidence breakdown, citation verdicts, retrieved chunks, mode comparison
 - [ ] **Step 8** — Full Docker Compose stack, case study, walkthrough
 
 ---
